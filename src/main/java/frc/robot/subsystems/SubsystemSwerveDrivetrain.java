@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -62,9 +61,6 @@ public class SubsystemSwerveDrivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-
     estimator.update(Rotation2d.fromDegrees(imu.getYaw()), modulePositions());
-
   }
 }

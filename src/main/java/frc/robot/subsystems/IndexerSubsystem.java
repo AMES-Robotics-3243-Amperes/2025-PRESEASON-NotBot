@@ -10,24 +10,25 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SubsystemShooter extends SubsystemBase {
-  SparkMax shooter = new SparkMax(13, MotorType.kBrushless);
+public class IndexerSubsystem extends SubsystemBase {
+  SparkMax motor = new SparkMax(14, MotorType.kBrushless);
 
-  public SubsystemShooter() {
+  public IndexerSubsystem() {
     SparkMaxConfig config = new SparkMaxConfig();
     config.idleMode(IdleMode.kBrake);
-    shooter.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    config.inverted(true);
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public Command runSpeedCommand(double speed) {
-    return runEnd(() -> shooter.set(speed), () -> shooter.set(0));
+    return runEnd(() -> motor.set(speed), () -> motor.set(0));
   }
 
-  public Command shootCommand() {
-    return runSpeedCommand(0.4);
+  public Command intakeCommand() {
+    return runSpeedCommand(0.3);
   }
 
-  public Command reverseAgaintIndexerCommand() {
-    return runSpeedCommand(-0.06);
+  public Command outtakeCommand() {
+    return runSpeedCommand(-0.08);
   }
 }

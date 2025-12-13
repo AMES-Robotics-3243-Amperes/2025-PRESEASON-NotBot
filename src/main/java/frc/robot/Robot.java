@@ -1,32 +1,39 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Milliseconds;
+import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveDriveTeleopCommand;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.SubsystemShooter;
 import frc.robot.subsystems.SubsystemSwerveDrivetrain;
 
-
 public class Robot extends TimedRobot {
-//  WoodSubsystem wood = new WoodSubsystem();
- 
- CommandXboxController controller = new CommandXboxController(0);
+  // WoodSubsystem wood = new WoodSubsystem();
 
- SubsystemSwerveDrivetrain drivetrain = new SubsystemSwerveDrivetrain();
+  CommandXboxController controller = new CommandXboxController(0);
+  SubsystemSwerveDrivetrain drivetrain = new SubsystemSwerveDrivetrain();
+  IndexerSubsystem indexer = new IndexerSubsystem();
+  SubsystemShooter shooter = new SubsystemShooter();
+
   public Robot() {
- 
-
     drivetrain.setDefaultCommand(new SwerveDriveTeleopCommand(drivetrain, controller));
 
+    controller.a().whileTrue(indexer.intakeCommand().alongWith(shooter.reverseAgaintIndexerCommand()));
+    controller.x().whileTrue(indexer.outtakeCommand());
+    controller.b().whileTrue(
+        indexer.outtakeCommand().withTimeout(Seconds.of(0.6)).andThen(
+            shooter.shootCommand().alongWith(
+                new WaitCommand(Seconds.of(0.6))
+                    .andThen(indexer.intakeCommand()))));
   }
+
   @Override
   public void autonomousInit() {
-  
   }
 
   @Override
@@ -35,26 +42,34 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+  }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void testInit() {}
+  public void testInit() {
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
